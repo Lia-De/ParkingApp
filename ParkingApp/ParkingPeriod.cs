@@ -7,8 +7,6 @@ public class ParkingPeriod
     public bool IsRunning { get; set; }
     public ParkingUser User { get; set; }
     public Car ParkedCar { get; set; }
-
-    public ParkingPeriod() { }
     public ParkingPeriod(DateTime startTime, ParkingUser user, Car parkedCar)
     {
         StartTime = startTime;
