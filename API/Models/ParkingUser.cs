@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ParkingApp;
+namespace API.Models;
 public class ParkingUser
 {
     public int Id { get; set; }
@@ -24,12 +24,13 @@ public class ParkingUser
     public int AddCar(string licenceNumber)
     {
         Car newCar = new Car(licenceNumber);
-        if (!Cars.Contains(newCar))  {
+        if (!Cars.Contains(newCar))
+        {
             Cars.Add(newCar);
         }
         return Cars.Count();
     }
-    public double LeaveParkingAndChargeAcconut(ParkingPeriod parkingPeriod) 
+    public double LeaveParkingAndChargeAcconut(ParkingPeriod parkingPeriod)
     {
         if (parkingPeriod.IsRunning)
         {
