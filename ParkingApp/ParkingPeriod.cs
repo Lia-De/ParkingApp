@@ -4,10 +4,10 @@ public class ParkingPeriod
 {
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
-    public bool IsRunning { get;  set; }
-    public int UserID { get;  set; }
-    public Car ParkedCar { get;  set; }
-    public double ParkingFee { get;  set; }
+    public bool IsRunning { get; set; }
+    public int UserID { get; set; }
+    public Car ParkedCar { get; set; }
+    public double ParkingFee { get; set; }
 
     public ParkingPeriod(DateTime startTime, int userID, Car parkedCar)
     {
@@ -24,7 +24,8 @@ public class ParkingPeriod
             EndTime = endTime;
             ParkingFee = feeToPay;
             IsRunning = false;
-        } else
+        } 
+        else
         {
             throw new Exception("The parking period was not running");
         }

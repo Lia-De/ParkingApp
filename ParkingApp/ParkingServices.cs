@@ -3,6 +3,8 @@ using System.Text.Json;
 
 namespace ParkingApp;
 
+
+
 public class ParkingServices
 {
     private static readonly double Fee = 14;
@@ -28,7 +30,8 @@ public class ParkingServices
             List<ParkingUser> users = JsonSerializer.Deserialize<List<ParkingUser>>(jsonUsers, options);
             ParkingUsers.AddRange(users);
         }
-        catch (Exception ex) {
+        catch (Exception ex) 
+        {
             Console.WriteLine(ex.Message);
         }
         try
@@ -66,7 +69,7 @@ public class ParkingServices
         DateTime startTime = DateTime.Now;
 
         // Find the user, and create a 
-        ParkingUser user = ParkingUsers.Find(u => u.Id == userID);
+        ParkingUser? user = ParkingUsers.Find(u => u.Id == userID);
         if (user == null)
         {
             Console.WriteLine("Create your new user here");

@@ -69,7 +69,7 @@ public class ParkingServices
         DateTime startTime = DateTime.Now;
 
         // Find the user, and create a 
-        ParkingUser user = ParkingUsers.Find(u => u.Id == userID);
+        ParkingUser? user = ParkingUsers.Find(u => u.Id == userID);
         if (user == null)
         {
             Console.WriteLine("Create your new user here");
