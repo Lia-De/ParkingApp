@@ -48,9 +48,9 @@ void InitializeJson()
     myParkingLot.StartParkingPeriod(1, "PPP111");
     Console.WriteLine($"I currently keep track of {myParkingLot.ParkingUsers.Count} users and {myParkingLot.ActiveParkingPeriods.Count} parking periods");
 
-    Console.WriteLine("Type in a number: ");
+    Console.WriteLine("Enter to continue and stop parking ");
 
-    int hoursToAdd = int.Parse(Console.ReadLine());
+    Console.ReadLine();
 
     myParkingLot.StopParkingPeriod(1, "MAC123");
     myParkingLot.StopParkingPeriod(1, "PPP111");

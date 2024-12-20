@@ -25,10 +25,11 @@ public class ParkingServices
         // read in the lists from file here
         try
         {
-            var options = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true  };
+            var options = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true };
             string jsonUsers = File.ReadAllText(_parkingUsersFile);
-            List<ParkingUser> users = JsonSerializer.Deserialize<List<ParkingUser>>(jsonUsers, options);
-            ParkingUsers.AddRange(users);
+            List<ParkingUser>? users = JsonSerializer.Deserialize<List<ParkingUser>>(jsonUsers, options);
+            if (users != null)
+                ParkingUsers.AddRange(users);
         }
         catch (Exception ex)
         {
@@ -37,7 +38,9 @@ public class ParkingServices
         try
         {
             string jsonParkingPeriods = File.ReadAllText(_activeParkingPeriodsFile);
-            ActiveParkingPeriods = JsonSerializer.Deserialize<List<ParkingPeriod>>(jsonParkingPeriods);
+            List<ParkingPeriod>? activePeriodsFromFile = JsonSerializer.Deserialize<List<ParkingPeriod>>(jsonParkingPeriods);
+            if (activePeriodsFromFile != null)
+                ActiveParkingPeriods.AddRange(activePeriodsFromFile);
         }
         catch (Exception ex)
         {
@@ -76,7 +79,7 @@ public class ParkingServices
         }
         else
         {
-            Car parkedCar = user.Cars.Find(c => c.LicencePlate.Equals(carLicencePlate));
+            Car? parkedCar = user.Cars.Find(c => c.LicencePlate.Equals(carLicencePlate));
             if (parkedCar == null)
             {
                 Console.WriteLine("Create your new car here");
@@ -94,8 +97,8 @@ public class ParkingServices
     }
     public void StopParkingPeriod(int userID, string carLicencePlate)
     {
-        ParkingPeriod parkingPeriod = null;
-        ParkingUser user = null;
+        ParkingPeriod? parkingPeriod = null;
+        ParkingUser? user = null;
         DateTime stopTime = DateTime.Now;
         if (ActiveParkingPeriods.Count == 0)
         {
@@ -106,7 +109,11 @@ public class ParkingServices
         {
             parkingPeriod = ActiveParkingPeriods.Find(period => (period.UserID.Equals(userID) && period.ParkedCar.LicencePlate.Equals(carLicencePlate)));
             user = ParkingUsers.Find(u => u.Id.Equals(userID));
-
+            if (parkingPeriod == null || user == null)
+            {
+                Console.WriteLine("No active parking period found for this user and car.");
+                return;
+            }
             DateTime startTime = parkingPeriod.StartTime;
             double feeToAdd = CalculateFee(startTime, stopTime);
 

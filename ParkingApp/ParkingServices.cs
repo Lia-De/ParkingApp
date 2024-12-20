@@ -27,17 +27,20 @@ public class ParkingServices
         {
             var options = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true };
             string jsonUsers = File.ReadAllText(_parkingUsersFile);
-            List<ParkingUser> users = JsonSerializer.Deserialize<List<ParkingUser>>(jsonUsers, options);
-            ParkingUsers.AddRange(users);
+            List<ParkingUser>? users = JsonSerializer.Deserialize<List<ParkingUser>>(jsonUsers, options);
+            if (users != null)
+                ParkingUsers.AddRange(users);
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
         try
         {
             string jsonParkingPeriods = File.ReadAllText(_activeParkingPeriodsFile);
-            ActiveParkingPeriods = JsonSerializer.Deserialize<List<ParkingPeriod>>(jsonParkingPeriods);
+            List<ParkingPeriod>? activePeriodsFromFile = JsonSerializer.Deserialize<List<ParkingPeriod>>(jsonParkingPeriods);
+            if (activePeriodsFromFile != null)
+                ActiveParkingPeriods.AddRange(activePeriodsFromFile);
         }
         catch (Exception ex)
         {
@@ -76,7 +79,7 @@ public class ParkingServices
         }
         else
         {
-            Car parkedCar = user.Cars.Find(c => c.LicencePlate.Equals(carLicencePlate));
+            Car? parkedCar = user.Cars.Find(c => c.LicencePlate.Equals(carLicencePlate));
             if (parkedCar == null)
             {
                 Console.WriteLine("Create your new car here");
@@ -94,8 +97,8 @@ public class ParkingServices
     }
     public void StopParkingPeriod(int userID, string carLicencePlate)
     {
-        ParkingPeriod parkingPeriod = null;
-        ParkingUser user = null;
+        ParkingPeriod? parkingPeriod = null;
+        ParkingUser? user = null;
         DateTime stopTime = DateTime.Now;
         if (ActiveParkingPeriods.Count == 0)
         {
@@ -106,25 +109,30 @@ public class ParkingServices
         {
             parkingPeriod = ActiveParkingPeriods.Find(period => (period.UserID.Equals(userID) && period.ParkedCar.LicencePlate.Equals(carLicencePlate)));
             user = ParkingUsers.Find(u => u.Id.Equals(userID));
-
+            if (parkingPeriod == null || user == null)
+            {
+                Console.WriteLine("No active parking period found for this user and car.");
+                return;
+            }
             DateTime startTime = parkingPeriod.StartTime;
             double feeToAdd = CalculateFee(startTime, stopTime);
-            
+
             parkingPeriod.ParkingEnded(stopTime, feeToAdd);
             user.LeaveParkingAndChargeAcconut(parkingPeriod);
-            
+
             ActiveParkingPeriods.Remove(parkingPeriod);
 
             WriteToFile(ParkingUsers, _parkingUsersFile);
-            WriteToFile(ActiveParkingPeriods, _activeParkingPeriodsFile );
+            WriteToFile(ActiveParkingPeriods, _activeParkingPeriodsFile);
 
-        } catch (Exception ex) { Console.WriteLine(ex.Message); }
+        }
+        catch (Exception ex) { Console.WriteLine(ex.Message); }
 
     }
-    
+
     public bool RegisterUser(string username, string password, string email, string licencePlate)
     {
-        int highestID = ParkingUsers.Count == 0 ? 0: ParkingUsers.Max(user => user.Id);
+        int highestID = ParkingUsers.Count == 0 ? 0 : ParkingUsers.Max(user => user.Id);
 
         ParkingUser newUser = new ParkingUser(++highestID, username, password, email);
         if (licencePlate != "") newUser.AddCar(licencePlate);
@@ -132,7 +140,7 @@ public class ParkingServices
         WriteToFile(ParkingUsers, _parkingUsersFile);
         return true;
     }
-    
+
     public double CalculateFee(DateTime startTime, DateTime endTime)
     {
         double feeToPay = 0;
@@ -169,7 +177,7 @@ public class ParkingServices
                     }
                     else
                     {
-                        feeToPay +=  FeeFromBreakpoint(endTime, StartTimeOfFullFee);
+                        feeToPay += FeeFromBreakpoint(endTime, StartTimeOfFullFee);
                     }
                 }
             }
@@ -187,18 +195,19 @@ public class ParkingServices
     {
         double fee = 0;
         DateTime breakpoint = startDate.Date.AddHours(breakpointHour);
-        
+
         TimeSpan timeToCharge = breakpoint - startDate;
         if (breakpointHour == StartTimeOfFullFee)
         {
             fee += timeToCharge.TotalHours * ReducedFee;
-        } else
+        }
+        else
         {
             fee += timeToCharge.TotalHours * Fee;
         }
         return fee;
     }
-    public static double FeeFromBreakpoint (DateTime endDate, int breakpointHour)
+    public static double FeeFromBreakpoint(DateTime endDate, int breakpointHour)
     {
         double fee = 0;
         DateTime breakpoint = endDate.Date.AddHours(breakpointHour);
@@ -206,7 +215,8 @@ public class ParkingServices
         if (breakpointHour == StartTimeOfFullFee)
         {
             fee = timeToCharge.TotalHours * Fee;
-        } else
+        }
+        else
         {
             fee = timeToCharge.TotalHours * ReducedFee;
         }
@@ -217,14 +227,14 @@ public class ParkingServices
     {
         double fee = 0;
         DateTime followingMidnight = parkingDate.AddDays(1).Date;
-        if (parkingDate.Hour >=StartTimeOfReducedFee)
+        if (parkingDate.Hour >= StartTimeOfReducedFee)
         {
             fee = ReducedFee * (followingMidnight - parkingDate).TotalHours;
         }
         else if (parkingDate.Hour < StartTimeOfFullFee)
         {
             fee = FeeUntilBreakpoint(parkingDate, StartTimeOfFullFee); //time before start of full fee
-            fee += (StartTimeOfReducedFee - StartTimeOfFullFee)* Fee; // fee for the full Fee hours
+            fee += (StartTimeOfReducedFee - StartTimeOfFullFee) * Fee; // fee for the full Fee hours
             fee += (24 - StartTimeOfReducedFee) * ReducedFee; // fee for time after 18 until midnight
 
         }
@@ -241,7 +251,7 @@ public class ParkingServices
     {
         double fee = 0;
         DateTime sameDayMidnight = parkingDate.Date;
-        
+
         if (parkingDate.Hour < StartTimeOfFullFee)
         {
             fee = (parkingDate - sameDayMidnight).TotalHours * ReducedFee;
