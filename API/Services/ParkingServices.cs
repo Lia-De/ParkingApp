@@ -25,7 +25,7 @@ public class ParkingServices
         // read in the lists from file here
         try
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
+            var options = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true  };
             string jsonUsers = File.ReadAllText(_parkingUsersFile);
             List<ParkingUser> users = JsonSerializer.Deserialize<List<ParkingUser>>(jsonUsers, options);
             ParkingUsers.AddRange(users);
@@ -46,6 +46,24 @@ public class ParkingServices
 
     }
 
+    // a method to report how many users and active parking periods are in the system.
+    public string Report()
+    {
+        return $"There are {ParkingUsers.Count} users and {ActiveParkingPeriods.Count} active parking periods.";
+    }
+    public string ReportUsers()
+    {
+        string report = "Users:\n";
+        foreach (ParkingUser user in ParkingUsers)
+        {
+            report += $"User: {user.UserName}, Email: {user.Email}, Cars: {user.Cars.Count}\n";
+            foreach (Car car in user.Cars)
+            {
+                report += $"  - Licence Plate: {car.LicencePlate}\n";
+            }
+        }
+        return report;
+    }
     public void StartParkingPeriod(int userID, string carLicencePlate)
     {
         DateTime startTime = DateTime.Now;
@@ -286,4 +304,3 @@ public class ParkingServices
         }
     }
 }
-

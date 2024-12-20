@@ -24,7 +24,8 @@ public class ParkingUser
     public int AddCar(string licenceNumber)
     {
         Car newCar = new Car(licenceNumber);
-        if (!Cars.Contains(newCar))  {
+        if (!Cars.Contains(newCar))  
+        {
             Cars.Add(newCar);
         }
         return Cars.Count();

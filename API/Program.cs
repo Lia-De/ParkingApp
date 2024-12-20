@@ -1,3 +1,5 @@
+using API.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -22,8 +24,29 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Needs the method to be called with: GET /startParking?userID=1234&licensePlate=ABC123
+app.MapGet("/startParking", (int userID, string licensePlate) =>
+{
+    string carToPark = licensePlate.ToUpper();
+    ParkingServices myParkingLot = new ParkingServices();
+    myParkingLot.StartParkingPeriod(userID, carToPark);
+    return $"Parking started for {carToPark} belonging to {myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == userID).UserName}";
+
+});
+app.MapGet("/endParking", (int userID, string licensePlate) =>
+{
+    string carToPark = licensePlate.ToUpper();
+    ParkingServices myParkingLot = new ParkingServices();
+    myParkingLot.StopParkingPeriod(userID, carToPark);
+    return $"Parking stopped for {carToPark} belonging to {myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == userID)}";
+
+});
+
+
+
 app.MapGet("/", () => {
-    return $"Hello World ";
+    ParkingServices myParkingLot = new ParkingServices();
+    return myParkingLot.Report() + "\n" + myParkingLot.ReportUsers();
 });
 
 app.Run();
