@@ -7,6 +7,9 @@
     "Cars": [
       {
         "LicencePlate": "TKJ192"
+      },
+      {
+        "LicencePlate": "ABC123"
       }
     ],
     "ParkingHistory": [
@@ -19,9 +22,39 @@
           "LicencePlate": "TKJ192"
         },
         "ParkingFee": 0.11961390972222223
+      },
+      {
+        "StartTime": "2024-12-20T14:08:06.9391665+01:00",
+        "EndTime": "2024-12-20T14:10:58.7578544+01:00",
+        "IsRunning": false,
+        "UserID": 1,
+        "ParkedCar": {
+          "LicencePlate": "ABC123"
+        },
+        "ParkingFee": 0.6681837862777777
+      },
+      {
+        "StartTime": "2024-12-20T14:13:45.2635354+01:00",
+        "EndTime": "2024-12-20T14:26:59.3533956+01:00",
+        "IsRunning": false,
+        "UserID": 1,
+        "ParkedCar": {
+          "LicencePlate": "ABC123"
+        },
+        "ParkingFee": 3.088127234111111
+      },
+      {
+        "StartTime": "2024-12-20T15:07:25.9931756+01:00",
+        "EndTime": "2024-12-20T15:08:08.1782118+01:00",
+        "IsRunning": false,
+        "UserID": 1,
+        "ParkedCar": {
+          "LicencePlate": "ABC123"
+        },
+        "ParkingFee": 0.16405291855555557
       }
     ],
-    "ParkingFeesOwed": 0.11961390972222223
+    "ParkingFeesOwed": 4.039977848666667
   },
   {
     "Id": 2,
@@ -33,15 +66,33 @@
         "LicencePlate": "777GAF"
       }
     ],
-    "ParkingHistory": [],
-    "ParkingFeesOwed": 0
+    "ParkingHistory": [
+      {
+        "StartTime": "2024-12-20T14:14:52.6019536+01:00",
+        "EndTime": "2024-12-20T14:15:07.1453194+01:00",
+        "IsRunning": false,
+        "UserID": 2,
+        "ParkedCar": {
+          "LicencePlate": "777GAF"
+        },
+        "ParkingFee": 0.056557533666666666
+      }
+    ],
+    "ParkingFeesOwed": 0.056557533666666666
   },
   {
     "Id": 3,
     "UserName": "Jenny",
     "Password": "pw",
     "Email": "you@me.se",
-    "Cars": [],
+    "Cars": [
+      {
+        "LicencePlate": "MAC000"
+      },
+      {
+        "LicencePlate": "MAC001"
+      }
+    ],
     "ParkingHistory": [],
     "ParkingFeesOwed": 0
   }

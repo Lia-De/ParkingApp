@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using API.Services;
+using API.Models;
 namespace API.Controllers;
 [ApiController]
 public class ParkingServicesController : Controller
@@ -13,7 +14,7 @@ public class ParkingServicesController : Controller
 
         if (username.Length < 1 || password.Length < 1 || email.Length < 1)
         {
-            return BadRequest("Please fill in all fields");
+            return BadRequest("Please fill in all required fields");
         }
 
         ParkingServices myParkingLot = new ParkingServices();
@@ -26,5 +27,31 @@ public class ParkingServicesController : Controller
         return Ok($"{feedback}");
     }
 
+    [HttpPost("addCar")]
+    public IActionResult AddCar([FromForm] int userID, [FromForm] string? licensePlate)
+    {
+
+        if (userID <= 1 || licensePlate.Length < 1)
+        {
+            return BadRequest("Please fill in all required fields");
+        }
+
+        ParkingServices myParkingLot = new ParkingServices();
+
+        string carPlate = carPlate = string.IsNullOrWhiteSpace(licensePlate) ? "" : licensePlate.ToUpper();
+        try
+        {
+            ParkingUser user = myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == userID);
+            myParkingLot.RegisterCar(userID, carPlate);
+
+            string feedback = $"User {user.UserName} added new car {carPlate} to the system\n";
+
+            return Ok($"{feedback}");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 
 }

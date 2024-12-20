@@ -67,24 +67,37 @@ public class ParkingServices
         }
         return report;
     }
+    public ParkingPeriod? CurrentlyParked(string licencePlate)
+    {
+        if (ActiveParkingPeriods.Count == 0)
+        {
+            Console.WriteLine("No active parking periods found.");
+            return null;
+        }
+        if (licencePlate == null)
+        {
+            throw new Exception("You must enter a licence plate");
+        }
+        string parkedCar = licencePlate.ToUpper();
+        ParkingPeriod? activePeriod = ActiveParkingPeriods.SingleOrDefault(p => p.ParkedCar.LicencePlate.Equals(parkedCar));
+        return activePeriod;
+    }
     public void StartParkingPeriod(int userID, string carLicencePlate)
     {
         DateTime startTime = DateTime.Now;
 
-        // Find the user, and create a 
+        // Find the user, and start the parking period for the car
         ParkingUser? user = ParkingUsers.Find(u => u.Id == userID);
         if (user == null)
         {
-            Console.WriteLine("Create your new user here");
+            throw new Exception("User does not exist");
         }
         else
         {
             Car? parkedCar = user.Cars.Find(c => c.LicencePlate.Equals(carLicencePlate));
             if (parkedCar == null)
             {
-                Console.WriteLine("Create your new car here");
-                Console.WriteLine("No car found");
-                return;
+                throw new Exception("Car not found for this user.");
             }
             else
             {
@@ -95,29 +108,27 @@ public class ParkingServices
         }
 
     }
-    public void StopParkingPeriod(int userID, string carLicencePlate)
+    public void StopParkingPeriod(string carLicencePlate)
     {
         ParkingPeriod? parkingPeriod = null;
-        ParkingUser? user = null;
         DateTime stopTime = DateTime.Now;
         if (ActiveParkingPeriods.Count == 0)
         {
-            Console.WriteLine("No active parking periods found.");
-            return;
+            throw new Exception("No active parking periods found.");
         }
         try
         {
-            parkingPeriod = ActiveParkingPeriods.Find(period => (period.UserID.Equals(userID) && period.ParkedCar.LicencePlate.Equals(carLicencePlate)));
-            user = ParkingUsers.Find(u => u.Id.Equals(userID));
-            if (parkingPeriod == null || user == null)
+            parkingPeriod = CurrentlyParked(carLicencePlate);
+            if (parkingPeriod == null)
             {
-                Console.WriteLine("No active parking period found for this user and car.");
-                return;
+                throw new Exception("No active parking period found for this car.");
             }
             DateTime startTime = parkingPeriod.StartTime;
+            ParkingUser? user = ParkingUsers.Find(u => u.Id == parkingPeriod.UserID); 
             double feeToAdd = CalculateFee(startTime, stopTime);
-
+            
             parkingPeriod.ParkingEnded(stopTime, feeToAdd);
+            if (user == null) throw new Exception("No user found for this parking period.");
             user.LeaveParkingAndChargeAcconut(parkingPeriod);
 
             ActiveParkingPeriods.Remove(parkingPeriod);
@@ -140,7 +151,20 @@ public class ParkingServices
         WriteToFile(ParkingUsers, _parkingUsersFile);
         return true;
     }
-
+    public void RegisterCar(int userID, string licencePlate)
+    {
+        ParkingUser? user = ParkingUsers.Find(u => u.Id == userID);
+        if (user == null)
+        {
+            throw new Exception("User does not exist");
+        }
+        if (user.Cars.Exists(c => c.LicencePlate.Equals(licencePlate)))
+        {
+            throw new Exception("Car already registered for this user.");
+        }
+        user.AddCar(licencePlate);
+        WriteToFile(ParkingUsers, _parkingUsersFile);
+    }
     public double CalculateFee(DateTime startTime, DateTime endTime)
     {
         double feeToPay = 0;
