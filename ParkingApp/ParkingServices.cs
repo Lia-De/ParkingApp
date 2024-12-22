@@ -52,7 +52,13 @@ public class ParkingServices
     // a method to report how many users and active parking periods are in the system.
     public string Report()
     {
-        return $"There are {ParkingUsers.Count} users and {ActiveParkingPeriods.Count} active parking periods.";
+        string? parkedCars = "";
+        foreach (ParkingPeriod period in ActiveParkingPeriods)
+        {
+            parkedCars += " "+period.ParkedCar.LicencePlate + " ,";
+        }
+        string finish = parkedCars == "" ? "." : $" for the following cars: {parkedCars}.";
+        return $"There are {ParkingUsers.Count} users and {ActiveParkingPeriods.Count} active parking periods{finish.Trim(',')}";
     }
     public string ReportUsers()
     {
@@ -79,7 +85,7 @@ public class ParkingServices
             throw new Exception("You must enter a licence plate");
         }
         string parkedCar = licencePlate.ToUpper();
-        ParkingPeriod? activePeriod = ActiveParkingPeriods.SingleOrDefault(p => p.ParkedCar.LicencePlate.Equals(parkedCar));
+        ParkingPeriod? activePeriod = ActiveParkingPeriods.FirstOrDefault(p => p.ParkedCar.LicencePlate.Equals(parkedCar));
         return activePeriod;
     }
     public void StartParkingPeriod(int userID, string carLicencePlate)
