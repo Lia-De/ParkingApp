@@ -90,6 +90,10 @@ public class ParkingServices
     }
     public void StartParkingPeriod(int userID, string carLicencePlate)
     {
+        if (CurrentlyParked(carLicencePlate) != null)
+        {
+            throw new Exception("Car is already parked.");
+        }
         DateTime startTime = DateTime.Now;
 
         // Find the user, and start the parking period for the car
