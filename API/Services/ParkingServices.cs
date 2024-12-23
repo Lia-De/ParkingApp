@@ -175,6 +175,8 @@ public class ParkingServices
         user.AddCar(licencePlate);
         WriteToFile(ParkingUsers, _parkingUsersFile);
     }
+
+    // DOUBLE CHECK THIS GIVES THE RIGHT AMOUNT - negative amnts if time very short?
     public double CalculateFee(DateTime startTime, DateTime endTime)
     {
         double feeToPay = 0;
