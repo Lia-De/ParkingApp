@@ -186,14 +186,21 @@ public class ParkingServices
         {
             if (startTime.Hour >= StartTimeOfFullFee)
             {
-                if (endTime.Hour < StartTimeOfReducedFee) // Parking time is all within normal fee hours.
+                if (startTime.Hour < StartTimeOfReducedFee)
                 {
-                    feeToPay = Fee * timeSpan.TotalHours;
+                    if (endTime.Hour < StartTimeOfReducedFee) // Parking time is all within normal fee hours.
+                    {
+                        feeToPay = Fee * timeSpan.TotalHours;
+                    }
+                    else  // (endTime.Hour >= StartReducedFee) Start is during full fee, and end is after Reduced hours
+                    {
+                        feeToPay = FeeUntilBreakpoint(startTime, StartTimeOfReducedFee);
+                        feeToPay += FeeFromBreakpoint(endTime, StartTimeOfReducedFee);
+                    }
                 }
-                else  // (endTime.Hour >= StartReducedFee) Start is during full fee, and end is after Reduced hours
+                else // Start and end time is during reduced fee hours
                 {
-                    feeToPay = FeeUntilBreakpoint(startTime, StartTimeOfReducedFee);
-                    feeToPay += FeeFromBreakpoint(endTime, StartTimeOfReducedFee);
+                    feeToPay = ReducedFee * timeSpan.TotalHours;
                 }
             }
             else if (startTime.Hour < StartTimeOfFullFee)

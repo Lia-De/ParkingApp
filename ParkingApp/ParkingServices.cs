@@ -184,14 +184,20 @@ public class ParkingServices
         {
             if (startTime.Hour >= StartTimeOfFullFee)
             {
-                if (endTime.Hour < StartTimeOfReducedFee) // Parking time is all within normal fee hours.
+                if (startTime.Hour < StartTimeOfReducedFee)
                 {
-                    feeToPay = Fee * timeSpan.TotalHours;
-                }
-                else  // (endTime.Hour >= StartReducedFee) Start is during full fee, and end is after Reduced hours
+                    if (endTime.Hour < StartTimeOfReducedFee) // Parking time is all within normal fee hours.
+                    {
+                        feeToPay = Fee * timeSpan.TotalHours;
+                    }
+                    else  // (endTime.Hour >= StartReducedFee) Start is during full fee, and end is after Reduced hours
+                    {
+                        feeToPay = FeeUntilBreakpoint(startTime, StartTimeOfReducedFee);
+                        feeToPay += FeeFromBreakpoint(endTime, StartTimeOfReducedFee);
+                    }
+                } else // Start and end time is during reduced fee hours
                 {
-                    feeToPay = FeeUntilBreakpoint(startTime, StartTimeOfReducedFee);
-                    feeToPay += FeeFromBreakpoint(endTime, StartTimeOfReducedFee);
+                    feeToPay = ReducedFee * timeSpan.TotalHours;
                 }
             }
             else if (startTime.Hour < StartTimeOfFullFee)
@@ -229,6 +235,7 @@ public class ParkingServices
     {
         double fee = 0;
         DateTime breakpoint = startDate.Date.AddHours(breakpointHour);
+        Console.WriteLine($"Fee Until Breakpoint: Start time: {startDate} Breakpoint time: {breakpoint}");
 
         TimeSpan timeToCharge = breakpoint - startDate;
         if (breakpointHour == StartTimeOfFullFee)
@@ -246,6 +253,7 @@ public class ParkingServices
         double fee = 0;
         DateTime breakpoint = endDate.Date.AddHours(breakpointHour);
         TimeSpan timeToCharge = endDate - breakpoint;
+        Console.WriteLine($"Fee From Breakpoint Endtime: {endDate} Breakpoint time: {breakpoint}");
         if (breakpointHour == StartTimeOfFullFee)
         {
             fee = timeToCharge.TotalHours * Fee;
