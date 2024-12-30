@@ -62,9 +62,19 @@
           "LicencePlate": "ABC123"
         },
         "ParkingFee": 0.3143946987222222
+      },
+      {
+        "StartTime": "2024-12-30T13:46:35.221867+01:00",
+        "EndTime": "2024-12-30T13:49:16.0531297+01:00",
+        "IsRunning": false,
+        "UserID": 1,
+        "ParkedCar": {
+          "LicencePlate": "ABC123"
+        },
+        "ParkingFee": 0.6254549105
       }
     ],
-    "ParkingFeesOwed": 4.3543725473888895
+    "ParkingFeesOwed": 4.97982745788889
   },
   {
     "Id": 2,
@@ -126,5 +136,14 @@
       }
     ],
     "ParkingFeesOwed": 1.0570386746111111
+  },
+  {
+    "Id": 4,
+    "UserName": "Kalle Nilsson",
+    "Password": "password",
+    "Email": "kalle@nilsson.se",
+    "Cars": [],
+    "ParkingHistory": [],
+    "ParkingFeesOwed": 0
   }
 ]
