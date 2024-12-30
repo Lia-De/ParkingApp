@@ -52,9 +52,19 @@
           "LicencePlate": "ABC123"
         },
         "ParkingFee": 0.16405291855555557
+      },
+      {
+        "StartTime": "2024-12-30T09:08:23.5163107+01:00",
+        "EndTime": "2024-12-30T09:09:44.3606618+01:00",
+        "IsRunning": false,
+        "UserID": 1,
+        "ParkedCar": {
+          "LicencePlate": "ABC123"
+        },
+        "ParkingFee": 0.3143946987222222
       }
     ],
-    "ParkingFeesOwed": 4.039977848666667
+    "ParkingFeesOwed": 4.3543725473888895
   },
   {
     "Id": 2,
@@ -93,7 +103,28 @@
         "LicencePlate": "MAC001"
       }
     ],
-    "ParkingHistory": [],
-    "ParkingFeesOwed": 0
+    "ParkingHistory": [
+      {
+        "StartTime": "2024-12-30T08:46:55.7959912+01:00",
+        "EndTime": "2024-12-30T08:49:33.5925628+01:00",
+        "IsRunning": false,
+        "UserID": 3,
+        "ParkedCar": {
+          "LicencePlate": "MAC000"
+        },
+        "ParkingFee": 0.613653334
+      },
+      {
+        "StartTime": "2024-12-30T09:07:37.8334535+01:00",
+        "EndTime": "2024-12-30T09:09:31.8468268+01:00",
+        "IsRunning": false,
+        "UserID": 3,
+        "ParkedCar": {
+          "LicencePlate": "MAC000"
+        },
+        "ParkingFee": 0.4433853406111111
+      }
+    ],
+    "ParkingFeesOwed": 1.0570386746111111
   }
 ]

@@ -82,7 +82,8 @@ app.MapGet("/currentlyParked/{input}", (string input) => {
         ParkingPeriod? period = myParkingLot.CurrentlyParked(licencePlate);
         if (period != null)
         {
-            return $"Car {licencePlate} is currently parked by {myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == period.UserID).UserName} since {period.StartTime}";
+            double currentFee = myParkingLot.CalculateFee(period.StartTime, DateTime.Now);
+            return $"Car {licencePlate} is currently parked by {myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == period.UserID).UserName} since {period.StartTime}. Currently owing: {currentFee:F2} SEK.";
         }
         return $"Car {licencePlate} is not currently parked";
     }
@@ -102,9 +103,17 @@ app.MapGet("/allfees", () => {
     return feedback;
 });
 
+app.MapGet("/currentlyOwing/{userID}", (int userID) => {
+    ParkingServices myParkingLot = new ParkingServices();
+    ParkingUser? user = myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == userID);
+    if (user == null) return $"No such user exists";
+    return $"User {user.UserName} currently owes {user.ParkingFeesOwed:F2} SEK";
+
+});
+
 app.MapGet("/", () => {
     ParkingServices myParkingLot = new ParkingServices();
-    return myParkingLot.Report() + "\n" + myParkingLot.ReportUsers();
+    return myParkingLot.Report().Trim(',') + "\n" + myParkingLot.ReportUsers();
 });
 
 app.Run();
