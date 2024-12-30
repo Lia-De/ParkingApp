@@ -55,7 +55,7 @@ public class ParkingServices
         string? parkedCars = "";
         foreach (ParkingPeriod period in ActiveParkingPeriods)
         {
-            parkedCars += " "+period.ParkedCar.LicencePlate + " ,";
+            parkedCars += " "+period.ParkedCar.LicencePlate + ",";
         }
         string finish = parkedCars == "" ? "." : $" for the following cars: {parkedCars}.";
         return $"There are {ParkingUsers.Count} users and {ActiveParkingPeriods.Count} active parking periods{finish.Trim(',')}";

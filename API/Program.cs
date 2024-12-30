@@ -113,7 +113,7 @@ app.MapGet("/currentlyOwing/{userID}", (int userID) => {
 
 app.MapGet("/", () => {
     ParkingServices myParkingLot = new ParkingServices();
-    return myParkingLot.Report().Trim(',') + "\n" + myParkingLot.ReportUsers();
+    return myParkingLot.Report() + "\n" + myParkingLot.ReportUsers();
 });
 
 app.Run();
