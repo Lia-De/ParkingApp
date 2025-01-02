@@ -79,15 +79,28 @@ app.MapGet("/currentlyParked/{input}", (string input) => {
     if (licencePlate != null)
     {
         ParkingServices myParkingLot = new ParkingServices();
-        ParkingPeriod? period = myParkingLot.CurrentlyParked(licencePlate);
-        if (period != null)
+
+        try
         {
-            double currentFee = myParkingLot.CalculateFee(period.StartTime, DateTime.Now);
-            return $"Car {licencePlate} is currently parked by {myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == period.UserID).UserName} since {period.StartTime}. Currently owing: {currentFee:F2} SEK.";
+            ParkingPeriod? period = myParkingLot.CurrentlyParked(licencePlate);
+            if (period != null)
+            {
+                double currentFee = myParkingLot.CalculateFee(period.StartTime, DateTime.Now);
+                return $"Car {licencePlate} is currently parked by {myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == period.UserID).UserName} since {period.StartTime}. Currently owing: {currentFee:F2} SEK.";
+            } else
+            {
+                return $"Car with Licence plate: {licencePlate} is not currently parked here.";
+            }
         }
-        return $"Car {licencePlate} is not currently parked";
+        catch (Exception e)
+        {
+            return e.Message;
+        }
     }
-    return "You must enter a licence plate";
+    else
+    {
+        return "You must enter a licence plate";
+    }
 
 });
 

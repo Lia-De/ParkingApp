@@ -77,7 +77,7 @@ public class ParkingServices
     {
         if (ActiveParkingPeriods.Count == 0)
         {
-            throw new Exception("No active parking periods found.");
+            return null;
         }
         if (licencePlate == null)
         {
@@ -85,6 +85,7 @@ public class ParkingServices
         }
         string parkedCar = licencePlate.ToUpper();
         ParkingPeriod? activePeriod = ActiveParkingPeriods.FirstOrDefault(p => p.ParkedCar.LicencePlate.Equals(parkedCar));
+ 
         return activePeriod;
     }
     public void StartParkingPeriod(int userID, string carLicencePlate)

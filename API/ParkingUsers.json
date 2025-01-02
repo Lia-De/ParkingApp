@@ -133,9 +133,19 @@
           "LicencePlate": "MAC000"
         },
         "ParkingFee": 0.4433853406111111
+      },
+      {
+        "StartTime": "2025-01-02T11:06:58.4003361+01:00",
+        "EndTime": "2025-01-02T11:08:02.674368+01:00",
+        "IsRunning": false,
+        "UserID": 3,
+        "ParkedCar": {
+          "LicencePlate": "MAC000"
+        },
+        "ParkingFee": 0.2499545685
       }
     ],
-    "ParkingFeesOwed": 1.0570386746111111
+    "ParkingFeesOwed": 1.306993243111111
   },
   {
     "Id": 4,
