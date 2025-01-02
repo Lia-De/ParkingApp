@@ -77,8 +77,7 @@ public class ParkingServices
     {
         if (ActiveParkingPeriods.Count == 0)
         {
-            Console.WriteLine("No active parking periods found.");
-            return null;
+            throw new Exception("No active parking periods found.");
         }
         if (licencePlate == null)
         {
