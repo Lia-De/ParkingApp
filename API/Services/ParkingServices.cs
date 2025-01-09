@@ -17,11 +17,11 @@ public class ParkingServices
 
         // read in the lists from file here
         
-        PersistDataServices.ReadFromFile(out List<ParkingUser>? users, _parkingUsersFile);
+        PersistDataServices.ReadInPersistantData(out List<ParkingUser>? users);
         if (users != null)
             ParkingUsers.AddRange(users);
         
-        PersistDataServices.ReadFromFile(out List<ParkingPeriod>? periods, _activeParkingPeriodsFile);
+        PersistDataServices.ReadInPersistantData(out List<ParkingPeriod>? periods);
         if (periods != null)
             ActiveParkingPeriods.AddRange(periods);
     }
@@ -90,7 +90,7 @@ public class ParkingServices
             {
                 ParkingPeriod newPeriod = new ParkingPeriod(startTime, userID, parkedCar);
                 ActiveParkingPeriods.Add(newPeriod);
-                PersistDataServices.WriteToFile(ActiveParkingPeriods, _activeParkingPeriodsFile);
+                PersistDataServices.PersistData(ActiveParkingPeriods);
             }
         }
 
@@ -120,8 +120,8 @@ public class ParkingServices
 
             ActiveParkingPeriods.Remove(parkingPeriod);
 
-            PersistDataServices.WriteToFile(ParkingUsers, _parkingUsersFile);
-            PersistDataServices.WriteToFile(ActiveParkingPeriods, _activeParkingPeriodsFile);
+            PersistDataServices.PersistData(ParkingUsers);
+            PersistDataServices.PersistData(ActiveParkingPeriods);
 
         }
         catch (Exception ex) { Console.WriteLine(ex.Message); }
@@ -135,7 +135,7 @@ public class ParkingServices
         ParkingUser newUser = new ParkingUser(++highestID, username, password, email);
         if (licencePlate != "") newUser.AddCar(licencePlate);
         ParkingUsers.Add(newUser);
-        PersistDataServices.WriteToFile(ParkingUsers, _parkingUsersFile);
+        PersistDataServices.PersistData(ParkingUsers);
         return true;
     }
     public void RegisterCar(int userID, string licencePlate)
@@ -150,7 +150,7 @@ public class ParkingServices
             throw new Exception("Car already registered for this user.");
         }
         user.AddCar(licencePlate);
-        PersistDataServices.WriteToFile(ParkingUsers, _parkingUsersFile);
+        PersistDataServices.PersistData(ParkingUsers);
     }
 
    
