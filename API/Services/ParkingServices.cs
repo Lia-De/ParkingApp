@@ -16,30 +16,14 @@ public class ParkingServices
         ActiveParkingPeriods = new List<ParkingPeriod>();
 
         // read in the lists from file here
-        try
-        {
-            var options = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true };
-            string jsonUsers = File.ReadAllText(_parkingUsersFile);
-            List<ParkingUser>? users = JsonSerializer.Deserialize<List<ParkingUser>>(jsonUsers, options);
-            if (users != null)
-                ParkingUsers.AddRange(users);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-        try
-        {
-            string jsonParkingPeriods = File.ReadAllText(_activeParkingPeriodsFile);
-            List<ParkingPeriod>? activePeriodsFromFile = JsonSerializer.Deserialize<List<ParkingPeriod>>(jsonParkingPeriods);
-            if (activePeriodsFromFile != null)
-                ActiveParkingPeriods.AddRange(activePeriodsFromFile);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-
+        
+        PersistDataServices.ReadFromFile(out List<ParkingUser>? users, _parkingUsersFile);
+        if (users != null)
+            ParkingUsers.AddRange(users);
+        
+        PersistDataServices.ReadFromFile(out List<ParkingPeriod>? periods, _activeParkingPeriodsFile);
+        if (periods != null)
+            ActiveParkingPeriods.AddRange(periods);
     }
 
     // a method to report how many users and active parking periods are in the system.
