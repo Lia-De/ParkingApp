@@ -85,7 +85,7 @@ app.MapGet("/currentlyParked/{input}", (string input) => {
             ParkingPeriod? period = myParkingLot.CurrentlyParked(licencePlate);
             if (period != null)
             {
-                double currentFee = myParkingLot.CalculateFee(period.StartTime, DateTime.Now);
+                double currentFee = PaymentService.CalculateFee(period.StartTime, DateTime.Now);
                 return $"Car {licencePlate} is currently parked by {myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == period.UserID).UserName} since {period.StartTime}. Currently owing: {currentFee:F2} SEK.";
             } else
             {
