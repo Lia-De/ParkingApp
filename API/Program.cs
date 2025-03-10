@@ -11,7 +11,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+var sitePolicy = "site-policy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(sitePolicy, builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .SetIsOriginAllowed(origin => true);
+    });
+});
+
+
 var app = builder.Build();
+
+app.UseCors(sitePolicy);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
