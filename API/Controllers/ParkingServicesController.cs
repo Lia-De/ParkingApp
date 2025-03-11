@@ -32,21 +32,24 @@ public class ParkingServicesController : ControllerBase
     }
 
     [HttpPost("addCar")]
-    public IActionResult AddCar([FromForm] int userID, [FromForm] string? licensePlate)
+    public IActionResult AddCar(ParkingDTO newCar)
     {
 
-        if (userID <= 1 || licensePlate.Length < 1)
+        if (newCar.UserID <= 1 || newCar.LicensePlate.Length < 1)
         {
             return BadRequest("Please fill in all required fields");
         }
 
         
 
-        string carPlate = carPlate = string.IsNullOrWhiteSpace(licensePlate) ? "" : licensePlate.ToUpper();
+        string carPlate = carPlate = string.IsNullOrWhiteSpace(newCar.LicensePlate) ? "" : newCar.LicensePlate.ToUpper();
         try
         {
-            ParkingUser user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == userID);
-            _myParkingLot.RegisterCar(userID, carPlate);
+            ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == newCar.UserID);
+            if (user == null) 
+                return BadRequest("User does not exist");
+            
+            _myParkingLot.RegisterCar(newCar.UserID, carPlate);
 
             string feedback = $"User {user.UserName} added new car {carPlate} to the system\n";
 
@@ -58,23 +61,48 @@ public class ParkingServicesController : ControllerBase
         }
     }
 
+    [HttpGet("/")]
+    public IActionResult ParkingLotReport()
+    {
+        var report = _myParkingLot.Report();
+        return Ok(report);
+    }
+
     [HttpGet("user/{userId}")]
     public ParkingUser? GetSingleUser(int userId)
     {
         ParkingUser? user = _myParkingLot.ParkingUsers.SingleOrDefault(u => u.Id == userId);
         return user;
-        //    if (user == null) return $"No such user exists";
-        //    string feedback = "";
-        //    int carCount = user.Cars.Count;
-        //    feedback += $"User {user.UserName} ({user.Email}) has {carCount} cars registered and currently owes {user.ParkingFeesOwed:F2} SEK\n";
-        //    if (carCount > 0) {
-        //        feedback += $"Cars belonging to {user.UserName} are: ";
-        //        foreach (var car in user.Cars)
-        //        {
-        //            feedback += car.ToString() + ", ";
-        //        }
-        //    }
-        //    return feedback.Trim(' ', ',');
+    }
+
+    [HttpGet("stopParking/{licensePlate}")]
+    public IActionResult StopParking(string licensePlate)
+    {
+        string carToPark = licensePlate.ToUpper();
+        ParkingPeriod? period = _myParkingLot.CurrentlyParked(carToPark);
+        if (period == null) return BadRequest("Car not parked");
+        int userID = period.UserID;
+        _myParkingLot.StopParkingPeriod(carToPark);
+        ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == userID);
+        if (user == null) return BadRequest("User not recognized");
+        return Ok(user.ParkingFeesOwed);
+    }
+
+    [HttpPost("startParking")]
+    public IActionResult StartParking(ParkingDTO newParking)
+    {
+
+        string carToPark = newParking.LicensePlate.ToUpper();
+        try
+        {
+            _myParkingLot.StartParkingPeriod(newParking.UserID, carToPark);
+            return Ok($"Parking started for {carToPark} belonging to {_myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == newParking.UserID).UserName}");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
 
     }
 
