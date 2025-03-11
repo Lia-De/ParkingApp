@@ -13,6 +13,22 @@ public class ParkingServicesController : ControllerBase
     {
         _myParkingLot = myParkingLot;
     }
+
+    [HttpGet("/")]
+    public IActionResult ParkingLotReport()
+    {
+        var report = _myParkingLot.Report();
+        return Ok(report);
+    }
+
+    [HttpGet("user/{userId}")]
+    public ParkingUser? GetSingleUser(int userId)
+    {
+        ParkingUser? user = _myParkingLot.ParkingUsers.SingleOrDefault(u => u.Id == userId);
+        return user;
+    }
+
+
     [HttpPost("addUser")]
     public IActionResult AddUser([FromForm] string username, [FromForm] string password, [FromForm] string email, [FromForm] string? licensePlate)
     {
@@ -40,13 +56,11 @@ public class ParkingServicesController : ControllerBase
             return BadRequest("Please fill in all required fields");
         }
 
-        
-
         string carPlate = carPlate = string.IsNullOrWhiteSpace(newCar.LicensePlate) ? "" : newCar.LicensePlate.ToUpper();
         try
         {
-            ParkingUser user = myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == userID);
-            myParkingLot.RegisterCar(userID, carPlate);
+            ParkingUser user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == newCar.UserID);
+            _myParkingLot.RegisterCar(newCar.UserID, carPlate);
 
             string feedback = $"User {user.UserName} added new car {carPlate} to the system\n";
 
@@ -58,19 +72,6 @@ public class ParkingServicesController : ControllerBase
         }
     }
 
-    [HttpGet("/")]
-    public IActionResult ParkingLotReport()
-    {
-        var report = _myParkingLot.Report();
-        return Ok(report);
-    }
-
-    [HttpGet("user/{userId}")]
-    public ParkingUser? GetSingleUser(int userId)
-    {
-        ParkingUser? user = _myParkingLot.ParkingUsers.SingleOrDefault(u => u.Id == userId);
-        return user;
-    }
 
     [HttpGet("stopParking/{licensePlate}")]
     public IActionResult StopParking(string licensePlate)
