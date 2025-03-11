@@ -74,17 +74,17 @@
         "ParkingFee": 0.6254549105
       },
       {
-        "StartTime": "2025-03-11T16:46:47.1433858+01:00",
-        "EndTime": "2025-03-11T16:47:11.6208898+01:00",
+        "StartTime": "2025-01-09T13:53:17.3248866+01:00",
+        "EndTime": "2025-01-09T14:00:33.7424347+01:00",
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
           "LicencePlate": "ABC123"
         },
-        "ParkingFee": 0.09519029333333334
+        "ParkingFee": 1.6971793537222222
       }
     ],
-    "ParkingFeesOwed": 5.075017751222223
+    "ParkingFeesOwed": 6.677006811611112
   },
   {
     "Id": 2,

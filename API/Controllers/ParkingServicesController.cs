@@ -45,11 +45,8 @@ public class ParkingServicesController : ControllerBase
         string carPlate = carPlate = string.IsNullOrWhiteSpace(newCar.LicensePlate) ? "" : newCar.LicensePlate.ToUpper();
         try
         {
-            ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == newCar.UserID);
-            if (user == null) 
-                return BadRequest("User does not exist");
-            
-            _myParkingLot.RegisterCar(newCar.UserID, carPlate);
+            ParkingUser user = myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == userID);
+            myParkingLot.RegisterCar(userID, carPlate);
 
             string feedback = $"User {user.UserName} added new car {carPlate} to the system\n";
 
