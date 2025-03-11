@@ -104,4 +104,40 @@ public class ParkingServicesController : ControllerBase
 
     }
 
+    [HttpGet("currentlyOwing/{userID}")]
+    public IActionResult CurrentlyOwing(int userID)
+    {
+        ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == userID);
+        if (user == null) 
+            return BadRequest("No such user");
+        return Ok(user.ParkingFeesOwed);
+    }
+
+  
+    [HttpGet("currentlyParked/{licencePlate}")]
+    public IActionResult CurrentlyParked(string licencePlate)
+    {
+        string? parkedCar = licencePlate.ToUpper();
+        if (parkedCar == null) 
+            return BadRequest("Not a car");
+        try
+        {
+            ParkingPeriod? period = _myParkingLot.CurrentlyParked(parkedCar);
+            if (period != null)
+            {
+                double currentFee = PaymentService.CalculateFee(period.StartTime, DateTime.Now);
+                return Ok(currentFee);
+            }
+            else
+            {
+                return BadRequest($"Car with Licence plate: {parkedCar} is not currently parked here.");
+            }
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+
 }

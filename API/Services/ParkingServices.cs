@@ -4,10 +4,6 @@ namespace API.Services;
 
 public class ParkingServices
 {
-   
-    private string _parkingUsersFile = "ParkingUsers.json";
-    private string _activeParkingPeriodsFile = "ActiveParkingPeriods.json";
-
     public List<ParkingUser> ParkingUsers { get; set; }
     public List<ParkingPeriod> ActiveParkingPeriods { get; set; }
     public ParkingServices()

@@ -43,35 +43,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.MapGet("/currentlyParked/{input}", (string input) => {
-//    string? licencePlate = input.ToUpper();
-//    if (licencePlate != null)
-//    {
-//        ParkingServices myParkingLot = new ParkingServices();
-
-//        try
-//        {
-//            ParkingPeriod? period = myParkingLot.CurrentlyParked(licencePlate);
-//            if (period != null)
-//            {
-//                double currentFee = myParkingLot.CalculateFee(period.StartTime, DateTime.Now);
-//                return $"Car {licencePlate} is currently parked by {myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == period.UserID).UserName} since {period.StartTime}. Currently owing: {currentFee:F2} SEK.";
-//            } else
-//            {
-//                return $"Car with Licence plate: {licencePlate} is not currently parked here.";
-//            }
-//        }
-//        catch (Exception e)
-//        {
-//            return e.Message;
-//        }
-//    }
-//    else
-//    {
-//        return "You must enter a licence plate";
-//    }
-
-//});
 
 //app.MapGet("/allfees", () => {
 //    ParkingServices myParkingLot = new ParkingServices();
@@ -85,12 +56,5 @@ app.MapControllers();
 //    return feedback;
 //});
 
-//app.MapGet("/currentlyOwing/{userID}", (int userID) => {
-//    ParkingServices myParkingLot = new ParkingServices();
-//    ParkingUser? user = myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == userID);
-//    if (user == null) return $"No such user exists";
-//    return $"User {user.UserName} currently owes {user.ParkingFeesOwed:F2} SEK";
-
-//});
 
 app.Run();
