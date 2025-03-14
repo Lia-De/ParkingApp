@@ -33,6 +33,7 @@ public class ParkingServicesController : ControllerBase
             frontendUser.ParkingFeesOwed = user.ParkingFeesOwed;
             frontendUser.Cars = user.Cars;
             frontendUser.ParkingHistory = user.ParkingHistory;
+            frontendUser.isParked = _myParkingLot.UserHasParkedCars(user.Id);
         }
         return frontendUser;
     }
@@ -88,10 +89,10 @@ public class ParkingServicesController : ControllerBase
         ParkingPeriod? period = _myParkingLot.CurrentlyParked(carToPark);
         if (period == null) return BadRequest("Car not parked");
         int userID = period.UserID;
-        _myParkingLot.StopParkingPeriod(carToPark);
+        double feeAdded = _myParkingLot.StopParkingPeriod(carToPark);
         ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == userID);
         if (user == null) return BadRequest("User not recognized");
-        return Ok(user.ParkingFeesOwed);
+        return Ok(feeAdded);
     }
 
     [HttpPost("startParking")]
@@ -138,7 +139,7 @@ public class ParkingServicesController : ControllerBase
             }
             else
             {
-                return BadRequest($"Car with Licence plate: {parkedCar} is not currently parked here.");
+                return NoContent();
             }
         }
         catch (Exception e)

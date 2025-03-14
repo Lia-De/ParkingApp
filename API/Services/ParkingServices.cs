@@ -33,6 +33,16 @@ public class ParkingServices
         string finish = parkedCars == "" ? "." : $" for the following cars:{parkedCars}";
         return $"There are {ParkingUsers.Count} users and {ActiveParkingPeriods.Count} active parking periods{finish.Trim(',')}";
     }
+    public List<Car>? UserHasParkedCars(int UserId)
+    {
+        List<Car> parked = new List<Car>();
+        foreach (ParkingPeriod period in ActiveParkingPeriods)
+        {
+            if (period.UserID == UserId)
+                parked.Add(period.ParkedCar);
+        }
+        return parked;
+    }
     public string ReportUsers()
     {
         string report = "Users:\n";
@@ -91,7 +101,7 @@ public class ParkingServices
         }
 
     }
-    public void StopParkingPeriod(string carLicencePlate)
+    public double StopParkingPeriod(string carLicencePlate)
     {
         ParkingPeriod? parkingPeriod = null;
         DateTime stopTime = DateTime.Now;
@@ -118,10 +128,11 @@ public class ParkingServices
 
             PersistDataServices.PersistData(ParkingUsers);
             PersistDataServices.PersistData(ActiveParkingPeriods);
+            return feeToAdd;
 
         }
         catch (Exception ex) { Console.WriteLine(ex.Message); }
-
+        return 0;
     }
 
     public bool RegisterUser(string username, string password, string email, string licencePlate)
