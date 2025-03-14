@@ -92,7 +92,11 @@ public class ParkingServicesController : ControllerBase
         double feeAdded = _myParkingLot.StopParkingPeriod(carToPark);
         ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == userID);
         if (user == null) return BadRequest("User not recognized");
-        return Ok(feeAdded);
+
+        UserDTO userDTO = GetSingleUser(userID);
+        StopParkingUserFeeDTO response = new StopParkingUserFeeDTO() { User=userDTO, Fee=feeAdded };
+        
+        return Ok(response);
     }
 
     [HttpPost("startParking")]
@@ -103,7 +107,8 @@ public class ParkingServicesController : ControllerBase
         try
         {
             _myParkingLot.StartParkingPeriod(newParking.UserID, carToPark);
-            return Ok($"Parking started for {carToPark} belonging to {_myParkingLot.ParkingUsers.FirstOrDefault(user => user.Id == newParking.UserID).UserName}");
+            UserDTO userDTO = GetSingleUser(newParking.UserID);
+            return Ok(userDTO);
         }
         catch (Exception e)
         {
