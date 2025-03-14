@@ -47,7 +47,7 @@ public class ParkingServicesController : ControllerBase
             return BadRequest("Please fill in all required fields");
         }
 
-
+        // Hardcoded password and email - does not pull from frontend yet. Fix probably with a new DTO class
         string carPlate = string.IsNullOrWhiteSpace(newUser.LicensePlate) ? "" : newUser.LicensePlate.ToUpper();
         _myParkingLot.RegisterUser(newUser.UserName, "password", "email", carPlate);
 
