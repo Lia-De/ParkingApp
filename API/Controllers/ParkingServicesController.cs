@@ -22,10 +22,19 @@ public class ParkingServicesController : ControllerBase
     }
 
     [HttpGet("user/{userId}")]
-    public ParkingUser? GetSingleUser(int userId)
+    public UserDTO? GetSingleUser(int userId)
     {
         ParkingUser? user = _myParkingLot.ParkingUsers.SingleOrDefault(u => u.Id == userId);
-        return user;
+        UserDTO frontendUser= new UserDTO();
+        if (user != null)
+        {
+            frontendUser.Id = user.Id;
+            frontendUser.UserName = user.UserName;
+            frontendUser.ParkingFeesOwed = user.ParkingFeesOwed;
+            frontendUser.Cars = user.Cars;
+            frontendUser.ParkingHistory = user.ParkingHistory;
+        }
+        return frontendUser;
     }
 
 
