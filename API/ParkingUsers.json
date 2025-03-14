@@ -1,7 +1,7 @@
 [
   {
     "Id": 1,
-    "UserName": "he",
+    "UserName": "Anders Karlsson",
     "Password": "pw",
     "Email": "mail@y.se",
     "Cars": [
@@ -98,7 +98,7 @@
   },
   {
     "Id": 2,
-    "UserName": "Haj",
+    "UserName": "Haj Fena",
     "Password": "pew",
     "Email": "mail@y.se",
     "Cars": [
@@ -122,7 +122,7 @@
   },
   {
     "Id": 3,
-    "UserName": "Jenny",
+    "UserName": "Jenny Yuengling",
     "Password": "pw",
     "Email": "you@me.se",
     "Cars": [
@@ -173,6 +173,19 @@
     "Password": "password",
     "Email": "kalle@nilsson.se",
     "Cars": [],
+    "ParkingHistory": [],
+    "ParkingFeesOwed": 0
+  },
+  {
+    "Id": 5,
+    "UserName": "Karl",
+    "Password": "password",
+    "Email": "email",
+    "Cars": [
+      {
+        "LicencePlate": "NNN999"
+      }
+    ],
     "ParkingHistory": [],
     "ParkingFeesOwed": 0
   }

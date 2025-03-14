@@ -30,21 +30,20 @@ public class ParkingServicesController : ControllerBase
 
 
     [HttpPost("addUser")]
-    public IActionResult AddUser([FromForm] string username, [FromForm] string password, [FromForm] string email, [FromForm] string? licensePlate)
+    public IActionResult AddUser(ParkingDTO newUser)
     {
 
-        if (username.Length < 1 || password.Length < 1 || email.Length < 1)
+        if (newUser.UserName is null || newUser.UserName.Length < 1)
         {
             return BadRequest("Please fill in all required fields");
         }
 
 
-        string carPlate = string.IsNullOrWhiteSpace(licensePlate) ? "" : licensePlate.ToUpper();
-        _myParkingLot.RegisterUser(username, password, email, carPlate);
+        string carPlate = string.IsNullOrWhiteSpace(newUser.LicensePlate) ? "" : newUser.LicensePlate.ToUpper();
+        _myParkingLot.RegisterUser(newUser.UserName, "password", "email", carPlate);
 
-        string feedback = $"User {username} added to the system\n";
-        feedback += _myParkingLot.Report();
-        return Ok($"{feedback}");
+
+        return Ok();
     }
 
     [HttpPost("addCar")]
