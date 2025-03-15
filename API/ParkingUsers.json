@@ -92,9 +92,19 @@
           "LicencePlate": "ABC123"
         },
         "ParkingFee": 0.2534749393333333
+      },
+      {
+        "StartTime": "2025-03-15T17:31:44.1892992+01:00",
+        "EndTime": "2025-03-15T17:31:54.8839933+01:00",
+        "IsRunning": false,
+        "UserID": 1,
+        "ParkedCar": {
+          "LicencePlate": "ABC123"
+        },
+        "ParkingFee": 0.041590477055555554
       }
     ],
-    "ParkingFeesOwed": 6.930481750944446
+    "ParkingFeesOwed": 6.972072228000001
   },
   {
     "Id": 2,
@@ -180,12 +190,8 @@
     "Id": 5,
     "UserName": "Karl",
     "Password": "password",
-    "Email": "email",
-    "Cars": [
-      {
-        "LicencePlate": "NNN999"
-      }
-    ],
+    "Email": "karl@yahoo.se",
+    "Cars": [],
     "ParkingHistory": [],
     "ParkingFeesOwed": 0
   }

@@ -4,7 +4,9 @@ using System.ComponentModel;
 using API.Services;
 using API.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using API.DTOs;
 namespace API.Controllers;
+
 [ApiController]
 public class ParkingServicesController : ControllerBase
 {
@@ -40,7 +42,7 @@ public class ParkingServicesController : ControllerBase
 
 
     [HttpPost("addUser")]
-    public IActionResult AddUser(ParkingDTO newUser)
+    public IActionResult AddUser(CreateUserDTO newUser)
     {
 
         if (newUser.UserName is null || newUser.UserName.Length < 1)
@@ -49,11 +51,11 @@ public class ParkingServicesController : ControllerBase
         }
 
         // Hardcoded password and email - does not pull from frontend yet. Fix probably with a new DTO class
-        string carPlate = string.IsNullOrWhiteSpace(newUser.LicensePlate) ? "" : newUser.LicensePlate.ToUpper();
-        _myParkingLot.RegisterUser(newUser.UserName, "password", "email", carPlate);
-
-
-        return Ok();
+        string carPlate = string.IsNullOrWhiteSpace(newUser.FirstCar) ? "" : newUser.FirstCar.ToUpper();
+        bool result = _myParkingLot.RegisterUser(newUser.UserName, newUser.Password, newUser.Email, carPlate);
+        if (result) 
+            return Ok();
+        return BadRequest("Email is already registered");
     }
 
     [HttpPost("addCar")]
@@ -153,5 +155,25 @@ public class ParkingServicesController : ControllerBase
         }
     }
 
+
+
+    [HttpGet("allFees")]
+    public IActionResult AllFees()
+    {
+        var result = new List<UserDTO>();
+
+        foreach (ParkingUser user in _myParkingLot.ParkingUsers)
+        {
+            UserDTO userDTO = new UserDTO();
+            userDTO.Id = user.Id;
+            userDTO.UserName = user.UserName;
+            userDTO.ParkingFeesOwed = user.ParkingFeesOwed;
+            result.Add(userDTO);
+
+        }
+        if (result.Count == 0)
+            return NoContent();
+        return Ok(result);
+    }
 
 }

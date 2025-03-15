@@ -1,4 +1,6 @@
-﻿namespace API.Models;
+﻿using API.Models;
+
+namespace API.DTOs;
 
 public class UserDTO
 {

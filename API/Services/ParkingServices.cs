@@ -139,6 +139,8 @@ public class ParkingServices
     {
         int highestID = ParkingUsers.Count == 0 ? 0 : ParkingUsers.Max(user => user.Id);
 
+        if (ParkingUsers.Any(u=> u.Email == email)) return false;
+
         ParkingUser newUser = new ParkingUser(++highestID, username, password, email);
         if (licencePlate != "") newUser.AddCar(licencePlate);
         ParkingUsers.Add(newUser);
