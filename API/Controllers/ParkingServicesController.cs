@@ -53,8 +53,18 @@ public class ParkingServicesController : ControllerBase
         // Hardcoded password and email - does not pull from frontend yet. Fix probably with a new DTO class
         string carPlate = string.IsNullOrWhiteSpace(newUser.FirstCar) ? "" : newUser.FirstCar.ToUpper();
         bool result = _myParkingLot.RegisterUser(newUser.UserName, newUser.Password, newUser.Email, carPlate);
-        if (result) 
-            return Ok();
+        
+        if (result)
+        {
+            var user = _myParkingLot.ParkingUsers.FirstOrDefault(user => user.Email == newUser.Email);
+            ParkingDTO returnUser = new ParkingDTO()
+            {
+                UserID = user.Id,
+                UserName = user.UserName,
+                LicensePlate = carPlate,
+            };
+            return Ok(returnUser);
+        }
         return BadRequest("Email is already registered");
     }
 
