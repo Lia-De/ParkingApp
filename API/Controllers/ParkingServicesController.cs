@@ -83,8 +83,6 @@ public class ParkingServicesController : ControllerBase
             ParkingUser user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == newCar.UserID);
             _myParkingLot.RegisterCar(newCar.UserID, carPlate);
 
-            string feedback = $"User {user.UserName} added new car {carPlate} to the system\n";
-
             return Ok(user.Cars);
         }
         catch (Exception ex)
