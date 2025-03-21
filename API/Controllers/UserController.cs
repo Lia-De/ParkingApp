@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Services;
 using API.Models;
+using API.DTOs;
 namespace API.Controllers;
 
 public class UserController : ControllerBase
@@ -29,7 +30,7 @@ public class UserController : ControllerBase
         {
             return BadRequest("Incorrect password");
         }
-        return Ok(loggedInUser.Id);
+        return Ok(new ParkingDTO(){ UserID = loggedInUser.Id, UserName = loggedInUser.UserName });
 
     }
 }
