@@ -85,7 +85,7 @@ public class ParkingServicesController : ControllerBase
 
             string feedback = $"User {user.UserName} added new car {carPlate} to the system\n";
 
-            return Ok($"{feedback}");
+            return Ok(user.Cars);
         }
         catch (Exception ex)
         {
