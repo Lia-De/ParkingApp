@@ -72,7 +72,7 @@ public class ParkingServicesController : ControllerBase
     public IActionResult AddCar(ParkingDTO newCar)
     {
 
-        if (newCar.UserID <= 1 || newCar.LicensePlate.Length < 1)
+        if (newCar.UserID <= 1)
         {
             return BadRequest("Please fill in all required fields");
         }
