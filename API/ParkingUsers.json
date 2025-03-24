@@ -6,10 +6,13 @@
     "Email": "mail@y.se",
     "Cars": [
       {
-        "LicencePlate": "TKJ192"
+        "RegPlate": "TKJ192"
       },
       {
-        "LicencePlate": "ABC123"
+        "RegPlate": "ABC123"
+      },
+      {
+        "RegPlate": "HAJ345"
       }
     ],
     "ParkingHistory": [
@@ -19,7 +22,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "TKJ192"
+          "RegPlate": "TKJ192"
         },
         "ParkingFee": 0.11961390972222223
       },
@@ -29,7 +32,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "ABC123"
+          "RegPlate": "ABC123"
         },
         "ParkingFee": 0.6681837862777777
       },
@@ -39,7 +42,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "ABC123"
+          "RegPlate": "ABC123"
         },
         "ParkingFee": 3.088127234111111
       },
@@ -49,7 +52,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "ABC123"
+          "RegPlate": "ABC123"
         },
         "ParkingFee": 0.16405291855555557
       },
@@ -59,7 +62,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "ABC123"
+          "RegPlate": "ABC123"
         },
         "ParkingFee": 0.3143946987222222
       },
@@ -69,7 +72,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "ABC123"
+          "RegPlate": "ABC123"
         },
         "ParkingFee": 0.6254549105
       },
@@ -79,7 +82,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "ABC123"
+          "RegPlate": "ABC123"
         },
         "ParkingFee": 1.6971793537222222
       },
@@ -89,7 +92,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "ABC123"
+          "RegPlate": "ABC123"
         },
         "ParkingFee": 0.2534749393333333
       },
@@ -99,7 +102,7 @@
         "IsRunning": false,
         "UserID": 1,
         "ParkedCar": {
-          "LicencePlate": "ABC123"
+          "RegPlate": "ABC123"
         },
         "ParkingFee": 0.041590477055555554
       }
@@ -113,7 +116,7 @@
     "Email": "mail@y.se",
     "Cars": [
       {
-        "LicencePlate": "777GAF"
+        "RegPlate": "777GAF"
       }
     ],
     "ParkingHistory": [
@@ -123,7 +126,7 @@
         "IsRunning": false,
         "UserID": 2,
         "ParkedCar": {
-          "LicencePlate": "777GAF"
+          "RegPlate": "777GAF"
         },
         "ParkingFee": 0.056557533666666666
       }
@@ -137,10 +140,10 @@
     "Email": "you@me.se",
     "Cars": [
       {
-        "LicencePlate": "MAC000"
+        "RegPlate": "MAC000"
       },
       {
-        "LicencePlate": "MAC001"
+        "RegPlate": "MAC001"
       }
     ],
     "ParkingHistory": [
@@ -150,7 +153,7 @@
         "IsRunning": false,
         "UserID": 3,
         "ParkedCar": {
-          "LicencePlate": "MAC000"
+          "RegPlate": "MAC000"
         },
         "ParkingFee": 0.613653334
       },
@@ -160,7 +163,7 @@
         "IsRunning": false,
         "UserID": 3,
         "ParkedCar": {
-          "LicencePlate": "MAC000"
+          "RegPlate": "MAC000"
         },
         "ParkingFee": 0.4433853406111111
       },
@@ -170,7 +173,7 @@
         "IsRunning": false,
         "UserID": 3,
         "ParkedCar": {
-          "LicencePlate": "MAC000"
+          "RegPlate": "MAC000"
         },
         "ParkingFee": 0.2499545685
       }
@@ -182,15 +185,6 @@
     "UserName": "Kalle Nilsson",
     "Password": "password",
     "Email": "kalle@nilsson.se",
-    "Cars": [],
-    "ParkingHistory": [],
-    "ParkingFeesOwed": 0
-  },
-  {
-    "Id": 5,
-    "UserName": "Karl",
-    "Password": "password",
-    "Email": "karl@yahoo.se",
     "Cars": [],
     "ParkingHistory": [],
     "ParkingFeesOwed": 0

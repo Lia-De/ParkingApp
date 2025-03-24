@@ -51,7 +51,7 @@ public class ParkingServicesController : ControllerBase
         }
 
         // Hardcoded password and email - does not pull from frontend yet. Fix probably with a new DTO class
-        string carPlate = string.IsNullOrWhiteSpace(newUser.FirstCar) ? "" : newUser.FirstCar.ToUpper();
+        string carPlate = string.IsNullOrWhiteSpace(newUser.RegPlate) ? "" : newUser.RegPlate.ToUpper();
         bool result = _myParkingLot.RegisterUser(newUser.UserName, newUser.Password, newUser.Email, carPlate);
         
         if (result)
@@ -61,7 +61,7 @@ public class ParkingServicesController : ControllerBase
             {
                 UserID = user.Id,
                 UserName = user.UserName,
-                LicensePlate = carPlate,
+                RegPlate = carPlate,
             };
             return Ok(returnUser);
         }
@@ -72,15 +72,12 @@ public class ParkingServicesController : ControllerBase
     public IActionResult AddCar(ParkingDTO newCar)
     {
 
-        if (newCar.UserID <= 1)
-        {
-            return BadRequest("Please fill in all required fields");
-        }
-
-        string carPlate = carPlate = string.IsNullOrWhiteSpace(newCar.LicensePlate) ? "" : newCar.LicensePlate.ToUpper();
+           string carPlate = carPlate = string.IsNullOrWhiteSpace(newCar.RegPlate) ? "" : newCar.RegPlate.ToUpper();
         try
         {
-            ParkingUser user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == newCar.UserID);
+            ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == newCar.UserID);
+            if (user == null) return BadRequest("User does not exist");
+            
             _myParkingLot.RegisterCar(newCar.UserID, carPlate);
 
             return Ok(user.Cars);
@@ -113,7 +110,7 @@ public class ParkingServicesController : ControllerBase
     public IActionResult StartParking(ParkingDTO newParking)
     {
 
-        string carToPark = newParking.LicensePlate.ToUpper();
+        string carToPark = newParking.RegPlate.ToUpper();
         try
         {
             _myParkingLot.StartParkingPeriod(newParking.UserID, carToPark);
@@ -138,10 +135,10 @@ public class ParkingServicesController : ControllerBase
     }
 
   
-    [HttpGet("currentlyParked/{licencePlate}")]
-    public IActionResult CurrentlyParked(string licencePlate)
+    [HttpGet("currentlyParked/{RegPlate}")]
+    public IActionResult CurrentlyParked(string RegPlate)
     {
-        string? parkedCar = licencePlate.ToUpper();
+        string? parkedCar = RegPlate.ToUpper();
         if (parkedCar == null) 
             return BadRequest("Not a car");
         try

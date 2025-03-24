@@ -21,9 +21,9 @@ public class ParkingUser
         ParkingHistory = new List<ParkingPeriod>();
         ParkingFeesOwed = 0;
     }
-    public int AddCar(string licenceNumber)
+    public int AddCar(string regPlate)
     {
-        Car newCar = new Car(licenceNumber);
+        Car newCar = new Car(regPlate);
         if (!Cars.Contains(newCar))
         {
             Cars.Add(newCar);

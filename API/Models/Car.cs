@@ -4,14 +4,14 @@ namespace API.Models;
 
 public class Car
 {
-    public string LicencePlate { get; set; } = string.Empty;
+    public string RegPlate { get; set; } = string.Empty;
     public Car() { }
     public Car(string licenceNumber)
     {
-        LicencePlate = licenceNumber;
+        RegPlate = licenceNumber;
     }
     public override string ToString()
     {
-        return LicencePlate;
+        return RegPlate;
     }
 }

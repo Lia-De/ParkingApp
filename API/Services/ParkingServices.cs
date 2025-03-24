@@ -28,7 +28,7 @@ public class ParkingServices
         string? parkedCars = "";
         foreach (ParkingPeriod period in ActiveParkingPeriods)
         {
-            parkedCars += " " +period.ParkedCar.LicencePlate + ",";
+            parkedCars += " " +period.ParkedCar.RegPlate + ",";
         }
         string finish = parkedCars == "" ? "." : $" for the following cars:{parkedCars}";
         return $"There are {ParkingUsers.Count} users and {ActiveParkingPeriods.Count} active parking periods{finish.Trim(',')}";
@@ -51,29 +51,29 @@ public class ParkingServices
             report += $"User: {user.UserName}, Email: {user.Email}, Cars: {user.Cars.Count}\n";
             foreach (Car car in user.Cars)
             {
-                report += $"  - Licence Plate: {car.LicencePlate}\n";
+                report += $"  - Licence Plate: {car.RegPlate}\n";
             }
         }
         return report;
     }
-    public ParkingPeriod? CurrentlyParked(string licencePlate)
+    public ParkingPeriod? CurrentlyParked(string RegPlate)
     {
         if (ActiveParkingPeriods.Count == 0)
         {
             return null;
         }
-        if (licencePlate == null)
+        if (RegPlate == null)
         {
             throw new Exception("You must enter a licence plate");
         }
-        string parkedCar = licencePlate.ToUpper();
-        ParkingPeriod? activePeriod = ActiveParkingPeriods.FirstOrDefault(p => p.ParkedCar.LicencePlate.Equals(parkedCar));
+        string parkedCar = RegPlate.ToUpper();
+        ParkingPeriod? activePeriod = ActiveParkingPeriods.FirstOrDefault(p => p.ParkedCar.RegPlate.Equals(parkedCar));
  
         return activePeriod;
     }
-    public void StartParkingPeriod(int userID, string carLicencePlate)
+    public void StartParkingPeriod(int userID, string carRegPlate)
     {
-        if (CurrentlyParked(carLicencePlate) != null)
+        if (CurrentlyParked(carRegPlate) != null)
         {
             throw new Exception("Car is already parked.");
         }
@@ -87,7 +87,7 @@ public class ParkingServices
         }
         else
         {
-            Car? parkedCar = user.Cars.Find(c => c.LicencePlate.Equals(carLicencePlate));
+            Car? parkedCar = user.Cars.Find(c => c.RegPlate.Equals(carRegPlate));
             if (parkedCar == null)
             {
                 throw new Exception("Car not found for this user.");
@@ -101,7 +101,7 @@ public class ParkingServices
         }
 
     }
-    public double StopParkingPeriod(string carLicencePlate)
+    public double StopParkingPeriod(string carRegPlate)
     {
         ParkingPeriod? parkingPeriod = null;
         DateTime stopTime = DateTime.Now;
@@ -111,7 +111,7 @@ public class ParkingServices
         }
         try
         {
-            parkingPeriod = CurrentlyParked(carLicencePlate);
+            parkingPeriod = CurrentlyParked(carRegPlate);
             if (parkingPeriod == null)
             {
                 throw new Exception("No active parking period found for this car.");
@@ -135,30 +135,30 @@ public class ParkingServices
         return 0;
     }
 
-    public bool RegisterUser(string username, string password, string email, string licencePlate)
+    public bool RegisterUser(string username, string password, string email, string RegPlate)
     {
         int highestID = ParkingUsers.Count == 0 ? 0 : ParkingUsers.Max(user => user.Id);
 
         if (ParkingUsers.Any(u=> u.Email == email)) return false;
 
         ParkingUser newUser = new ParkingUser(++highestID, username, password, email);
-        if (licencePlate != "") newUser.AddCar(licencePlate);
+        if (RegPlate != "") newUser.AddCar(RegPlate);
         ParkingUsers.Add(newUser);
         PersistDataServices.PersistData(ParkingUsers);
         return true;
     }
-    public void RegisterCar(int userID, string licencePlate)
+    public void RegisterCar(int userID, string RegPlate)
     {
         ParkingUser? user = ParkingUsers.Find(u => u.Id == userID);
         if (user == null)
         {
             throw new Exception("User does not exist");
         }
-        if (user.Cars.Exists(c => c.LicencePlate.Equals(licencePlate)))
+        if (user.Cars.Exists(c => c.RegPlate.Equals(RegPlate)))
         {
             throw new Exception("Car already registered for this user.");
         }
-        user.AddCar(licencePlate);
+        user.AddCar(RegPlate);
         PersistDataServices.PersistData(ParkingUsers);
     }
 
