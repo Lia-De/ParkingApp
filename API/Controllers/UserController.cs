@@ -30,7 +30,7 @@ public class UserController : ControllerBase
         {
             return BadRequest("Incorrect password");
         }
-        return Ok(new ParkingDTO(){ UserID = loggedInUser.Id, UserName = loggedInUser.UserName });
+        return Ok(new ParkingDTO(){ UserID = loggedInUser.Id, UserName = loggedInUser.UserName, LicensePlate="" });
 
     }
 }
