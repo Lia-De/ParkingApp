@@ -33,8 +33,8 @@ public class ParkingServicesController : ControllerBase
             frontendUser.Id = user.Id;
             frontendUser.UserName = user.UserName;
             frontendUser.ParkingFeesOwed = user.ParkingFeesOwed;
-            frontendUser.Cars = user.Cars;
-            frontendUser.ParkingHistory = user.ParkingHistory;
+            frontendUser.Cars = user.Cars.OrderBy(c=> c.RegPlate).ToList();
+            frontendUser.ParkingHistory = user.ParkingHistory.OrderBy(hist => hist.ParkedCar.RegPlate).ThenByDescending(hist=> hist.EndTime).ToList();
             frontendUser.isParked = _myParkingLot.UserHasParkedCars(user.Id);
         }
         return frontendUser;
