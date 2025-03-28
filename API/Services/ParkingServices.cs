@@ -162,5 +162,21 @@ public class ParkingServices
         PersistDataServices.PersistData(ParkingUsers);
     }
 
-   
+    public void RegisterCar(int userID, string RegPlate, string carName)
+    {
+        ParkingUser? user = ParkingUsers.Find(u => u.Id == userID);
+        if (user == null)
+        {
+            throw new Exception("User does not exist");
+        }
+        if (user.Cars.Exists(c => c.RegPlate.Equals(RegPlate)))
+        {
+            throw new Exception("Car already registered for this user.");
+        }
+        user.AddCar(RegPlate, carName);
+        PersistDataServices.PersistData(ParkingUsers);
+    }
+
+
+
 }

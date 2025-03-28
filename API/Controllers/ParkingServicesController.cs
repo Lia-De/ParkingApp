@@ -77,8 +77,14 @@ public class ParkingServicesController : ControllerBase
         {
             ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == newCar.UserID);
             if (user == null) return BadRequest("User does not exist");
-            
-            _myParkingLot.RegisterCar(newCar.UserID, carPlate);
+            if (string.IsNullOrEmpty(newCar.CarName))
+            {
+                _myParkingLot.RegisterCar(newCar.UserID, carPlate);
+            }
+            else
+            {
+                _myParkingLot.RegisterCar(newCar.UserID, carPlate, newCar.CarName);
+            }
 
             return Ok(user.Cars);
         }

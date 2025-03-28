@@ -30,6 +30,16 @@ public class ParkingUser
         }
         return Cars.Count();
     }
+    public int AddCar(string regPlate, string carName)
+    {
+        Car newCar = new Car(regPlate);
+        newCar.Name = carName;
+        if (!Cars.Contains(newCar))
+        {
+            Cars.Add(newCar);
+        }
+        return Cars.Count();
+    }
     public double LeaveParkingAndChargeAcconut(ParkingPeriod parkingPeriod)
     {
         if (parkingPeriod.IsRunning)

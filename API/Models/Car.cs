@@ -5,6 +5,7 @@ namespace API.Models;
 public class Car
 {
     public string RegPlate { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
     public Car() { }
     public Car(string licenceNumber)
     {
