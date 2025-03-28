@@ -135,14 +135,14 @@ public class ParkingServices
         return 0;
     }
 
-    public bool RegisterUser(string username, string password, string email, string RegPlate)
+    public bool RegisterUser(string username, string password, string email, string RegPlate, string? carName)
     {
         int highestID = ParkingUsers.Count == 0 ? 0 : ParkingUsers.Max(user => user.Id);
 
         if (ParkingUsers.Any(u=> u.Email == email)) return false;
 
         ParkingUser newUser = new ParkingUser(++highestID, username, password, email);
-        if (RegPlate != "") newUser.AddCar(RegPlate);
+        if (RegPlate != "") newUser.AddCar(RegPlate, carName);
         ParkingUsers.Add(newUser);
         PersistDataServices.PersistData(ParkingUsers);
         return true;
