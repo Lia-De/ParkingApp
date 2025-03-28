@@ -52,7 +52,7 @@ public class ParkingServicesController : ControllerBase
 
         // Hardcoded password and email - does not pull from frontend yet. Fix probably with a new DTO class
         string carPlate = string.IsNullOrWhiteSpace(newUser.RegPlate) ? "" : newUser.RegPlate.ToUpper();
-        bool result = _myParkingLot.RegisterUser(newUser.UserName, newUser.Password, newUser.Email, carPlate);
+        bool result = _myParkingLot.RegisterUser(newUser.UserName, newUser.Password, newUser.Email, carPlate, newUser.Name);
         
         if (result)
         {
@@ -62,6 +62,7 @@ public class ParkingServicesController : ControllerBase
                 UserID = user.Id,
                 UserName = user.UserName,
                 RegPlate = carPlate,
+                Name = newUser.Name
             };
             return Ok(returnUser);
         }

@@ -6,4 +6,5 @@ public class CreateUserDTO
     public string Password { get; set; }
     public string Email { get; set; }
     public string? RegPlate { get; set; }
+    public string? Name { get; set; } // For Car nickname
 }

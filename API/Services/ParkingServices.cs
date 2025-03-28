@@ -135,7 +135,7 @@ public class ParkingServices
         return 0;
     }
 
-    public bool RegisterUser(string username, string password, string email, string RegPlate, string? carName)
+    public bool RegisterUser(string username, string password, string email, string RegPlate, string carName)
     {
         int highestID = ParkingUsers.Count == 0 ? 0 : ParkingUsers.Max(user => user.Id);
 
