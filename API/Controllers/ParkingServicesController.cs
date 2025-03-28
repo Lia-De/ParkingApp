@@ -77,13 +77,13 @@ public class ParkingServicesController : ControllerBase
         {
             ParkingUser? user = _myParkingLot.ParkingUsers.FirstOrDefault(u => u.Id == newCar.UserID);
             if (user == null) return BadRequest("User does not exist");
-            if (string.IsNullOrEmpty(newCar.CarName))
+            if (string.IsNullOrEmpty(newCar.Name))
             {
                 _myParkingLot.RegisterCar(newCar.UserID, carPlate);
             }
             else
             {
-                _myParkingLot.RegisterCar(newCar.UserID, carPlate, newCar.CarName);
+                _myParkingLot.RegisterCar(newCar.UserID, carPlate, newCar.Name);
             }
 
             return Ok(user.Cars);
@@ -153,6 +153,7 @@ public class ParkingServicesController : ControllerBase
             if (period != null)
             {
                 double currentFee = PaymentService.CalculateFee(period.StartTime, DateTime.Now);
+                //var responseData = new (){ period = period, fee = currentFee };
                 return Ok(currentFee);
             }
             else
